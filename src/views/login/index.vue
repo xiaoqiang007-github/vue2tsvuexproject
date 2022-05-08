@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    home
+  <div class="login">
+    login
   </div>
 </template>
 
@@ -8,8 +8,11 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'Home',
+  name: 'Login',
   components: {
   }
 })
 </script>
+
+<style lang="scss" scoped>
+</style>

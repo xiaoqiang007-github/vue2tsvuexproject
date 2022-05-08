@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        list-style: none;
+      }
+      /*导航栏通栏背景*/
+      .bg {
+        position: relative;
+        border-bottom: 1px solid #000;
+        background-color: rgba(0 ,0 ,0, 0.8);
+      }
+      .logo {
+        margin-top: 16px;
+        float: left;
+        width: 200px;
+        height: 54px;
+        background: url(https://game.gtimg.cn/images/yxzj/web201706/images/comm/logo.png) 0 0 no-repeat;
+      }
+      .nav {
+        width: 1200px;
+        height: 83px;
+        margin: 0 auto;
+      }
+      .drop {
+        position: absolute;
+        width: 100%;
+        height: 0;
+        background-color: rgba(0 ,0 ,0, 0.7);
+        transition: height .5s ease;
+      }
+      .box {
+        margin-top: 42px;
+        height: 1100px;
+        background: url(https://ossweb-img.qq.com/upload/webplat/info/yxzj/20210916/6208970056642.png) center top no-repeat;
+      }
+      .nav ul {
+        float: left;
+        margin-left: 25px;
+      }
+      .nav li {
+        float: left;
+      }
+      .nav a {
+        display: block;
+        width: 121px;
+        height: 83px;
+        line-height: 83px;
+        color: #c9c9dd;
+        font-size: 18px;
+        text-decoration: none;
+        text-align: center;
+      }
+      .nav a:hover {
+        color: #e4b653;
+        background: url(https://game.gtimg.cn/images/yxzj/web201706/images/comm/index.png) 0 0 no-repeat;
+      }
+      /*鼠标经过bg盒子 让drop高度变高*/
+      .bg:hover .drop{
+        height: 360px;
+      }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="bg">
+      <div class="nav">
+       <div class="logo"></div>
+        <ul>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+          <li><a href="#"> 网站首页 </a></li>
+        </ul>
+      </div>
+      <div class="drop"></div>
+    </div>
+  </div>
+</body>
+</html>
