@@ -2,7 +2,9 @@
   <el-container>
     <el-aside style="width:200px;"><AppAside /></el-aside>
     <el-container>
-      <el-header>Header</el-header>
+      <el-header>
+        <AppHeader />
+      </el-header>
       <!-- 子路由出口 -->
       <router-view></router-view>
     </el-container>
@@ -12,10 +14,12 @@
 <script lang="ts">
 import Vue from 'vue'
 import AppAside from './components/app-aside.vue'
+import AppHeader from './components/app-header.vue'
 export default Vue.extend({
   name: 'LayoutIndex',
   components: {
-    AppAside
+    AppAside,
+    AppHeader
   }
 })
 </script>
@@ -32,5 +36,6 @@ export default Vue.extend({
 
 .el-header {
   background-color: #b3c0d1;
+  padding: 0;
 }
 </style>

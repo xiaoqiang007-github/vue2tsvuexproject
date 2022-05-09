@@ -31,26 +31,14 @@
         </el-menu-item>
       </el-submenu>
       <!-- 只有一个子菜单时不显示父菜单 手动添加点击事件 -->
-      <el-submenu index="2" class="hide" @click="$router.push('/course')">
-        <template slot="title" >
-          <i class="el-icon-location"></i>
-          <span>课程管理</span>
-        </template>
-        <!-- <el-menu-item index="/course">
-          <i class="el-icon-document"></i>
+      <el-menu-item index="/course">
+          <i class="el-icon-menu"></i>
           <span slot="title">课程管理</span>
-        </el-menu-item> -->
-      </el-submenu>
-      <el-submenu index="3" class="hide">
-        <template slot="title">
-          <i class="el-icon-location"></i>
-          <span>课程管理</span>
-        </template>
-        <el-menu-item index="/user">
-          <i class="el-icon-document"></i>
+      </el-menu-item>
+       <el-menu-item index="/user">
+          <i class="el-icon-menu"></i>
           <span slot="title">用户管理</span>
-        </el-menu-item>
-      </el-submenu>
+      </el-menu-item>
       <el-submenu index="4">
         <template slot="title">
           <i class="el-icon-location"></i>
@@ -78,14 +66,13 @@ export default Vue.extend({
       isCollapse: false
     }
   },
+
   methods: {
-    methods: {
-      handleOpen (key: string, keyPath: string): void {
-        console.log(key, keyPath)
-      },
-      handleClose (key: string, keyPath: string): void {
-        console.log(key, keyPath)
-      }
+    handleOpen (key: string, keyPath: string): void {
+      console.log('handleOpen', key, keyPath)
+    },
+    handleClose (key: string, keyPath: string): void {
+      console.log('handleClose', key, keyPath)
     }
   }
 })
@@ -109,10 +96,5 @@ export default Vue.extend({
   display: flex;
   justify-content: flex-start;
   align-items: center;
-}
-
-// 隐藏只有一个子菜单时不显示父菜单的箭头
-.hide .el-submenu__title .el-submenu__icon-arrow {
-  display: none;
 }
 </style>
