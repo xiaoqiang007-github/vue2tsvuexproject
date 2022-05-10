@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const request = axios.create({
+export const request = axios.create({
+  baseURL: 'http://edufront.lagounews.com'
 })
 
-export default request
+export const login = '/front/user/login'

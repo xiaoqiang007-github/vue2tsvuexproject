@@ -19,6 +19,8 @@ module.exports = {
         "delimiter": "none",
         "requireLast": true
       }
-    }]
+    }],
+    // 解决 any 警告  warning: Unexpected any. Specify a different type 
+    "@typescript-eslint/no-explicit-any": ["off"]
   }
 }
