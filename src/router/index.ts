@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Layout from '../layout/index.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,10 @@ const routes: Array<RouteConfig> = [
   {
     path: '/login',
     name: 'login',
-    component: () => import(/* webpackChunkName: 'login' */'@/views/login/index.vue')
+    component: () => import(/* webpackChunkName: 'login' */'@/views/login/index.vue'),
+    meta: {
+      notRequiresAuth: true // notRequiresAuth 登录页面权限检验， 默认没有notRequiresAuth需要检验
+    }
   },
   {
     path: '/',
@@ -61,12 +65,29 @@ const routes: Array<RouteConfig> = [
   {
     path: '*',
     name: '404',
-    component: () => import(/* webpackChunkName: 'error' */'@/views/error-page/four.vue')
+    component: () => import(/* webpackChunkName: 'error' */'@/views/error-page/four.vue'),
+    meta: {
+      notRequiresAuth: true
+    }
   }
 ]
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta?.notRequiresAuth) {
+    if (!store.state.user) {
+      next({
+        path: '/login',
+        query: { // 登录成功跳回原来的页面
+          redirect: to.fullPath
+        }
+      })
+    }
+  }
+  next()
 })
 
 export default router

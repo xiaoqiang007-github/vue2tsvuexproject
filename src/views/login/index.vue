@@ -51,12 +51,14 @@ export default Vue.extend({
         // 2. 提交表单
         this.isLoginLoadding = true
         const data = await userLogin(this.form)
-        const { state, message } = data.data
+        const { state, message, content } = data.data
+        console.log(this.$store.state.user)
         if (state !== 1) {
           this.$message.error(message)
         } else {
+          this.$store.commit('setUser', content)
           this.$message.success(message)
-          this.$router.push('/')
+          this.$router.push(this.$route.query.redirect as string || '/')
         }
       } catch (e) {
         console.log(e)
