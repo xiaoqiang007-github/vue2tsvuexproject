@@ -52,13 +52,12 @@ export default Vue.extend({
         this.isLoginLoadding = true
         const data = await userLogin(this.form)
         const { state, message, content } = data.data
-        console.log(this.$store.state.user)
         if (state !== 1) {
           this.$message.error(message)
         } else {
           this.$store.commit('setUser', content)
           this.$message.success(message)
-          this.$router.push(this.$route.query.redirect as string || '/')
+          this.$router.push('/')
         }
       } catch (e) {
         console.log(e)

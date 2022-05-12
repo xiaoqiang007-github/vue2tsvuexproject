@@ -6,13 +6,12 @@ import store from '@/store'
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
-
   {
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: 'login' */'@/views/login/index.vue'),
     meta: {
-      notRequiresAuth: true // notRequiresAuth 登录页面权限检验， 默认没有notRequiresAuth需要检验
+      notAuthenticated: true // 不需要权限的页面，默认没有改属性即需要权限
     }
   },
   {
@@ -67,7 +66,7 @@ const routes: Array<RouteConfig> = [
     name: '404',
     component: () => import(/* webpackChunkName: 'error' */'@/views/error-page/four.vue'),
     meta: {
-      notRequiresAuth: true
+      notAuthenticated: true
     }
   }
 ]
@@ -77,15 +76,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (!to.meta?.notRequiresAuth) {
-    if (!store.state.user) {
-      next({
-        path: '/login',
-        query: { // 登录成功跳回原来的页面
-          redirect: to.fullPath
-        }
-      })
-    }
+  const { state } = store
+  if (!to.meta?.notAuthenticated && !state.user) {
+    return next({
+      path: '/login',
+      query: {
+        redirect: to.fullPath
+      }
+    })
   }
   next()
 })

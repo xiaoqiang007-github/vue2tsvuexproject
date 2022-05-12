@@ -7,48 +7,63 @@
       <el-breadcrumb-item>活动详情</el-breadcrumb-item>
     </el-breadcrumb>
     <el-dropdown>
-    <span class="el-dropdown-link">
-      <!-- 默认头像 -->
-      <el-avatar :size="'medium'" :src="userInfo.portrait || require('../../assets/default-avatar.png')"></el-avatar>
-      <i class="el-icon-arrow-down el-icon--right" />
-    </span>
-    <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item>{{userInfo.userName}}</el-dropdown-item>
-      <el-dropdown-item divided @click="handleLoginOut">退出</el-dropdown-item>
-    </el-dropdown-menu>
-  </el-dropdown>
+      <span class="el-dropdown-link">
+        <!-- https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png -->
+        <!-- <el-avatar :size="'medium'" :src="user.portrait || requier('../../assets/avatar-default.png')" :src="''"></el-avatar> -->
+        <el-avatar :size="'medium'" :src="user.portrait"></el-avatar>
+        <i class="el-icon-arrow-down el-icon--right" />
+      </span>
+      <el-dropdown-menu slot="dropdown">
+        <el-dropdown-item command="username">{{user.userName}}</el-dropdown-item>
+        <el-dropdown-item divided command="loginout" @click.native="handleCommand('loginout')">退出</el-dropdown-item>
+      </el-dropdown-menu>
+    </el-dropdown>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { getUserInfo, toLoginOut } from '@/utils/user'
+import { getInfo, loginOut } from '@/utils/user'
 export default Vue.extend({
   name: 'AppHeader',
   data () {
     return {
-      userInfo: {
-      }
+      user: {}
     }
   },
 
   created () {
-    this.init()
+    this.loadUserInfo()
+    this.loadUserInfo()
+    this.loadUserInfo()
   },
 
   methods: {
-    async init () {
-      const { content } = await getUserInfo(this.$store.state.user.refresh_token)
-      console.log(this.$store.state.refresh_token, content)
-      this.userInfo = content
+    async loadUserInfo () {
+      console.log('loadUserInfo')
+      const { content: data } = await getInfo()
+      console.log(data)
+      this.user = data
     },
-    async handleLoginOut () {
-      const { content } = await toLoginOut(this.$store.state.user.refresh_token)
-      if (content) {
-        this.$message.success('退出成功')
-        this.$store.commit('setUser', null)
-        sessionStorage.setItem('user', '')
-        this.$router.push('/login')
+    async handleCommand (command: string) {
+      if (command === 'loginout') {
+        this.$confirm('确认退出应用？', '退出提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const { error: userError, message } = await loginOut()
+          if (!userError) {
+            this.$store.commit('setUser', '')
+            this.$message.success(message)
+            this.$router.push('/login')
+          }
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出'
+          })
+        })
       }
     }
   }
