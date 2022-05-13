@@ -21,6 +21,7 @@ module.exports = {
       }
     }],
     // 解决 any 警告  warning: Unexpected any. Specify a different type 
-    "@typescript-eslint/no-explicit-any": ["off"]
+    "@typescript-eslint/no-explicit-any": ["off"],
+    'space-before-function-paren': ["off"], // 函数名和括号之间的空格暂不检验
   }
 }

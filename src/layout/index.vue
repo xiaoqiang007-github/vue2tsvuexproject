@@ -6,7 +6,9 @@
         <AppHeader />
       </el-header>
       <!-- 子路由出口 -->
-      <router-view></router-view>
+      <div class="content">
+        <router-view></router-view>
+      </div>
     </el-container>
   </el-container>
 </template>
@@ -37,5 +39,9 @@ export default Vue.extend({
 .el-header {
   background-color: #b3c0d1;
   padding: 0;
+}
+
+.content {
+  padding: 20px;
 }
 </style>

@@ -111,3 +111,5 @@ export const login = '/front/user/login'
 export const userInfo = '/front/user/getInfo'
 
 export const loginOutUrl = '/front/user/logout'
+
+export const saveOrUpdate = '/boss/menu/saveOrUpdate'
