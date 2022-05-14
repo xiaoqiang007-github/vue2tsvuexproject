@@ -37,7 +37,12 @@ const routes: Array<RouteConfig> = [
       {
         path: '/menu-add',
         name: 'menuAdd',
-        component: () => import(/* webpackChunkName: 'menuAdd' */'@/views/menu/menu-add.vue')
+        component: () => import(/* webpackChunkName: 'menu' */'@/views/menu/add.vue')
+      },
+      {
+        path: '/menu-edit',
+        name: 'menuEdit',
+        component: () => import(/* webpackChunkName: 'menu' */'@/views/menu/edit.vue')
       },
       {
         path: '/resource',

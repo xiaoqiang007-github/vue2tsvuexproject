@@ -1,7 +1,7 @@
 <template>
   <div class="menu-add">
     <el-card class="box-card">
-      <div slot="header" class="clearfix">添加菜单</div>
+      <div slot="header" class="clearfix">{{isEdit?'编辑菜单':'添加菜单'}}</div>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="菜单名称">
           <el-input v-model="form.name"></el-input>
@@ -37,8 +37,8 @@
           ></el-input-number>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即创建</el-button>
-          <el-button>取消</el-button>
+          <el-button type="primary" @click="onSubmit">提交</el-button>
+          <el-button v-if="!isEdit">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -50,15 +50,15 @@ import Vue from 'vue'
 import { toSaveOrUpdate, toGetEditMenuInfo } from '@/utils/menu'
 
 export default Vue.extend({
-  name: 'MenuAdd',
+  name: 'CreateOrEdit',
   components: {},
   data() {
     return {
       form: {
         parentId: -1,
-        name: '123',
-        href: '123',
-        icon: '123',
+        name: '',
+        href: '',
+        icon: '',
         orderNum: 0,
         description: '',
         shown: false
@@ -66,16 +66,25 @@ export default Vue.extend({
       parentMenuList: {}
     }
   },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
   created () {
     this.loadMenuInfo()
   },
   methods: {
     async loadMenuInfo () {
-      const { error, content } = await toGetEditMenuInfo()
+      console.log('this.$route', this.$route)
+      const { error, content } = await toGetEditMenuInfo(this.$route.params.id)
       if (!error) {
+        if (content.menuInfo) {
+          this.form = content.menuInfo
+        }
         this.parentMenuList = content.parentMenuList
       }
-      console.log('this.parentMenuList', this.parentMenuList)
     },
     async onSubmit() {
       // 表单验证

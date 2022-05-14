@@ -176,3 +176,8 @@ export const loginOutUrl = '/front/user/logout'
 export const saveOrUpdate = '/boss/menu/saveOrUpdate'
 
 export const getEditMenuInfo = '/boss/menu/getEditMenuInfo'
+
+export const getAllMenu = '/boss/menu/getAll'
+
+// 删除菜单
+export const deleteMenu = '/boss/menu/'
