@@ -106,6 +106,67 @@ request.interceptors.response.use(function (config) {
   return Promise.reject(error)
 })
 
+// 两个服务的成功状态码
+export const successCode = [1, '000000']
+
+export interface MyData { // 返回接口类型比联合数组数据更好用些
+  success?: boolean
+  time?: string
+  state: number | string
+  error: string
+  message: string
+  content: any
+  [propName: string]: any
+}
+
+// 定义接口函数统一返回的数据格式
+export interface MyData2 { // 返回接口类型比联合数组数据更好用些
+  success: boolean
+  state: number
+  message: string
+  content: any
+  [propName: string]: any
+}
+
+export interface MyData3 { // 返回接口类型比联合数组数据更好用些
+  code: string
+  mesg: string
+  time: string
+  data: any
+  [propName: string]: any
+}
+
+// 处理接口返回的数据格式
+export const formateReturnData = (data: MyData2 | MyData3): MyData => {
+  let result: MyData = {
+    error: '',
+    message: '',
+    state: '',
+    content: {}
+  }
+  try {
+    if (data.data) {
+      result = {
+        state: data.code,
+        error: '',
+        message: data.mesg,
+        content: data.data
+      }
+    } else {
+      result = {
+        state: data.state,
+        error: '',
+        message: data.message,
+        content: data.content
+      }
+    }
+    return result
+  } catch (e) {
+    console.log('formateReturnDate error: ', e)
+    return result
+  }
+}
+
 export const login = '/front/user/login'
 
 export const userInfo = '/front/user/getInfo'
@@ -113,3 +174,5 @@ export const userInfo = '/front/user/getInfo'
 export const loginOutUrl = '/front/user/logout'
 
 export const saveOrUpdate = '/boss/menu/saveOrUpdate'
+
+export const getEditMenuInfo = '/boss/menu/getEditMenuInfo'

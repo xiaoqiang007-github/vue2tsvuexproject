@@ -1,31 +1,51 @@
-import { request, saveOrUpdate } from './index'
+import { request, saveOrUpdate, MyData, successCode, getEditMenuInfo, formateReturnData } from './index'
 
-interface MyData2 { // 返回接口类型比联合数组数据更好用些
-    error: string
-    message: string
-    content: any
+interface UpdateMenu {
+  parentId: number
+  name: string
+  href: string
+  icon: string
+  orderNum: number
+  description: string
+  shown: boolean
 }
 
-export const toSaveOrUpdate = async (): Promise<MyData2> => {
+export const toSaveOrUpdate = async (params: UpdateMenu): Promise<MyData> => {
   const data = await request({
     url: saveOrUpdate,
     method: 'post',
     headers: {
       'Content-Type': 'application/json'
+    },
+    data: params
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? 'error' : '',
+    message,
+    content,
+    state
+  }
+}
+
+export const toGetEditMenuInfo = async (id?: string): Promise<MyData> => {
+  const data = await request({
+    url: getEditMenuInfo,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: {
+      id: id || -1
     }
   })
-  const { state, content, message } = data.data
-  if (state !== 1) {
-    return {
-      error: 'error',
-      message,
-      content
-    }
-  } else {
-    return {
-      error: '',
-      message,
-      content
-    }
+  // 默认得到是front格式数据，如MyData格式，如果不是则
+  const { state, content, message } = formateReturnData(data.data)
+  console.log('formateReturnData(data.data)', formateReturnData(data.data))
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
   }
 }
