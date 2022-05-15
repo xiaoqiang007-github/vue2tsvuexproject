@@ -1,15 +1,17 @@
 <template>
   <div class="role">
-    role
+    <RowList />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import RowList from './components/List.vue'
 
 export default Vue.extend({
   name: 'Role',
   components: {
+    RowList
   }
 })
 </script>

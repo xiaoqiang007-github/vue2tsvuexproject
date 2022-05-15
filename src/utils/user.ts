@@ -1,7 +1,5 @@
 import { request, login, userInfo, loginOutUrl } from './index'
 import qs from 'qs'
-// import { AxiosResponse, AxiosError } from 'axios'
-// import axios from 'axios'
 import axios, { AxiosResponse, AxiosError } from 'axios'
 
 interface Login {
@@ -55,8 +53,6 @@ export const getInfo = async (): Promise<MyData2> => {
     const e = _e as Error | AxiosError
     let message: string
     if (axios.isAxiosError(e) && e.response) {
-      // const data = e.response?.data
-      // console.log(data)
       message = ''
     } else {
       message = (e as Error).message

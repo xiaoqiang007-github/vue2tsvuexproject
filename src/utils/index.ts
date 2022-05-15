@@ -187,3 +187,12 @@ export const getResourcePages = '/boss/resource/getResourcePages'
 
 // 查询资源分类列表
 export const getAllSource = '/boss/resource/category/getAll'
+
+// 获取所有角色
+export const getRoleAll = '/boss/role/all'
+
+// 删除角色
+export const deleteRole = '/boss/role/'
+
+// 添加或更新角色
+export const saveOrUpdateRole = '/boss/role/saveOrUpdate'
