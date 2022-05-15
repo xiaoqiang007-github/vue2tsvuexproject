@@ -181,3 +181,9 @@ export const getAllMenu = '/boss/menu/getAll'
 
 // 删除菜单
 export const deleteMenu = '/boss/menu/'
+
+// 按条件分页查询资源
+export const getResourcePages = '/boss/resource/getResourcePages'
+
+// 查询资源分类列表
+export const getAllSource = '/boss/resource/category/getAll'

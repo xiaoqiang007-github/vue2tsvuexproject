@@ -34,8 +34,6 @@ export default Vue.extend({
 
   created () {
     this.loadUserInfo()
-    this.loadUserInfo()
-    this.loadUserInfo()
   },
 
   methods: {
@@ -52,9 +50,9 @@ export default Vue.extend({
           cancelButtonText: '取消',
           type: 'warning'
         }).then(async () => {
-          const { error: userError, message } = await loginOut()
-          if (!userError) {
-            this.$store.commit('setUser', '')
+          const { error, message } = await loginOut()
+          if (!error) {
+            this.$store.commit('setUser', 'null')
             this.$message.success(message)
             this.$router.push('/login')
           }
