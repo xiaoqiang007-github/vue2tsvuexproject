@@ -3,7 +3,7 @@
     <!-- <el-card class="box-card">
     </el-card> -->
     <el-card class="box-card">
-      <el-button slot="header" @click="dialogRole = true">添加角色</el-button>
+      <el-button slot="header" @click="addRole">添加角色</el-button>
       <el-table :data="roles" style="width: 100%">
         <el-table-column prop="id" label="编号"> </el-table-column>
         <el-table-column prop="name" label="角色名称"> </el-table-column>
@@ -12,13 +12,13 @@
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button
-            type="text" size="mini" @click="handleEdit(scope.$index, scope.row)"
+            type="text" size="mini" @click="$router.push('/role/'+scope.row.id+'/alloc-menu')"
               >分配菜单</el-button
             >
             <el-button
               type="text"
               size="mini"
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="$router.push('/role/'+scope.row.id+'/assets-menu')"
               >分配资源</el-button
             >
             <el-button
@@ -37,15 +37,13 @@
     </el-card>
 
     <el-dialog
-      title="添加角色"
+      :title="isEdit?'编辑角色':'添加角色'"
       :visible.sync="dialogRole"
       width="30%"
+      @open="openRole"
+      @close="closeRole"
       >
-      <CreateOrEdit @roleSuccess="roleSuccess" @roleCancel="dialogRole = false" />
-      <!-- <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogRole = false">取 消</el-button>
-        <el-button type="primary" @click="dialogRole = false">确 定</el-button>
-      </span> -->
+      <CreateOrEdit ref="createOrEdit" :is-edit="isEdit" :role-id="roleId" @roleSuccess="roleSuccess" @roleCancel="dialogRole = false" />
     </el-dialog>
   </div>
 </template>
@@ -63,13 +61,29 @@ export default Vue.extend({
   data() {
     return {
       roles: [],
-      dialogRole: false
+      dialogRole: false,
+      roleId: null,
+      isEdit: false
     }
   },
   created() {
     this.loadRole()
   },
   methods: {
+    openRole () {
+      this.$nextTick(() => { // 防止首次获取不到报错
+        (this.$refs.createOrEdit as InstanceType<typeof CreateOrEdit>).openRole()
+      })
+    },
+    closeRole () {
+      this.$nextTick(() => { // 防止首次获取不到报错
+        (this.$refs.createOrEdit as InstanceType<typeof CreateOrEdit>).closeRole()
+      })
+    },
+    addRole () {
+      this.isEdit = false
+      this.dialogRole = true
+    },
     roleSuccess () {
       this.dialogRole = false
       this.loadRole()
@@ -81,16 +95,11 @@ export default Vue.extend({
       }
     },
     handleEdit(index: number, row: any) {
-      console.log(index, row)
-      this.$router.push({
-        name: 'menuEdit',
-        params: {
-          id: row.id
-        }
-      })
+      this.roleId = row.id
+      this.isEdit = true
+      this.dialogRole = true
     },
     handleDelete(index: number, row: any) {
-      console.log(index, row)
       this.$confirm('确定删除吗?', '删除提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

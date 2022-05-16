@@ -5,7 +5,11 @@ import {
   formateReturnData,
   getRoleAll,
   deleteRole,
-  saveOrUpdateRole
+  saveOrUpdateRole,
+  getRole,
+  setAllocateUserRoles,
+  getMenuNodeList,
+  getRoleMenus
 } from './index'
 
 export const toGetRoleAll = async (): Promise<MyData> => {
@@ -57,6 +61,83 @@ export const toSaveOrUpdateRole = async (params: RoleQuery): Promise<MyData> => 
       'Content-Type': 'application/json'
     },
     data: params
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+export const toGetRole = async (id: string | number): Promise<MyData> => {
+  const data = await request({
+    url: getRole + id,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+interface SetUser {
+  userId: string | number
+  roleIdList: number[] | string[]
+}
+
+export const toSetAllocateUserRoles = async (params: SetUser): Promise<MyData> => {
+  const data = await request({
+    url: setAllocateUserRoles,
+    method: 'post',
+    data: params,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+export const toGetRoleMenus = async (id: string | number): Promise<MyData> => {
+  const data = await request({
+    url: getRoleMenus,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: {
+      roleId: id
+    }
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+export const toGetMenuNodeList = async (): Promise<MyData> => {
+  const data = await request({
+    url: getMenuNodeList,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
   })
   const { state, content, message } = formateReturnData(data.data)
   return {

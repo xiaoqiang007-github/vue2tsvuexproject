@@ -43,7 +43,6 @@ export const getInfo = async (): Promise<MyData2> => {
       }
     })
     const { state, content, message } = data.data
-    console.log('getInfo...', state, content, message)
     return {
       error: state !== 1 ? 'error' : '',
       message,

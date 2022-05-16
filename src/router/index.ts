@@ -30,6 +30,18 @@ const routes: Array<RouteConfig> = [
         component: () => import(/* webpackChunkName: 'role' */'@/views/role/index.vue')
       },
       {
+        path: '/role/:id/alloc-menu',
+        name: 'allocMenu',
+        component: () => import(/* webpackChunkName: 'alloc-menu' */'@/views/role/allocMenu.vue'),
+        props: true // 路由参数映射
+      },
+      {
+        path: '/role/:id/assets-menu',
+        name: 'assetsMenu',
+        component: () => import(/* webpackChunkName: 'assets-menu' */'@/views/role/assetsMenu.vue'),
+        props: true // 路由参数映射
+      },
+      {
         path: '/menu',
         name: 'menu',
         component: () => import(/* webpackChunkName: 'menu' */'@/views/menu/index.vue')

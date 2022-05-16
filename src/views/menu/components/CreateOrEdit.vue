@@ -30,7 +30,6 @@
         <el-form-item label="排序">
           <el-input-number
             v-model="form.orderNum"
-            @change="handleChange"
             :min="1"
             :max="10"
             label="描述文字"
@@ -77,7 +76,6 @@ export default Vue.extend({
   },
   methods: {
     async loadMenuInfo () {
-      console.log('this.$route', this.$route)
       const { error, content } = await toGetEditMenuInfo(this.$route.params.id)
       if (!error) {
         if (content.menuInfo) {
@@ -94,9 +92,6 @@ export default Vue.extend({
         this.$message.success(message)
         this.$router.back()
       }
-    },
-    handleChange(value: number) {
-      console.log(value)
     }
   }
 })

@@ -45,7 +45,6 @@ export default Vue.extend({
   methods: {
     async onSubmit () {
       try {
-        console.log('submit!')
         // 1. 表单验证
         await (this.$refs.loginForm as Form).validate()
         // 2. 提交表单
@@ -60,7 +59,7 @@ export default Vue.extend({
           this.$router.push('/')
         }
       } catch (e) {
-        console.log(e)
+        console.log('onSubmit error', e)
         this.isLoginLoadding = false
       }
     }

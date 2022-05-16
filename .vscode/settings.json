@@ -1,0 +1,21 @@
+{
+  // 关闭自动检测功能,可以正常使用用户设置里面的tab缩进
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  // 函数名和括号之间有空格
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  // "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  // *** 我本地alt + shift + f 的格式化工具用的是vetur
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "trailingComma": "none", // 禁止随时添加逗号
+      "semi": false, // 不加分号
+      "singleQuote": true, // 使用单引号
+    }
+  },
+  "vetur.format.options.tabSize": 2, // vetur设置两个空格缩进
+  "[vue]": {
+    "editor.defaultFormatter": "octref.vetur"
+  }
+}

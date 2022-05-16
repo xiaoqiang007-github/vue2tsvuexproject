@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { toSaveOrUpdateRole } from '@/utils/role'
+import { toSaveOrUpdateRole, toGetRole } from '@/utils/role'
 
 export default Vue.extend({
   name: 'CreateOrEdit',
@@ -36,7 +36,41 @@ export default Vue.extend({
       }
     }
   },
+  props: {
+    isEdit: {
+      type: Boolean,
+      required: true
+    },
+    roleId: {
+      type: [String, Number],
+      default: 100
+    }
+  },
   methods: {
+    openRole () {
+      if (this.isEdit) {
+        this.queryRoleUser()
+      } else {
+        this.initRole()
+      }
+    },
+    closeRole () {
+      console.log('closeRole')
+    },
+    initRole () {
+      this.role = {
+        id: '',
+        name: '',
+        code: '',
+        description: ''
+      }
+    },
+    async queryRoleUser () {
+      const { error, content } = await toGetRole(this.roleId)
+      if (!error) {
+        this.role = content
+      }
+    },
     async onSubmit () {
       // 表单验证
       const { error, message } = await toSaveOrUpdateRole(this.role)

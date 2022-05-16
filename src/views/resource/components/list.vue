@@ -72,7 +72,6 @@ export default Vue.extend({
   },
   methods: {
     onSubmit() {
-      console.log('submit!')
       this.initForm()
       this.loadSource()
     },

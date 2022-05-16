@@ -50,7 +50,6 @@ export const toGetEditMenuInfo = async (id: string | number = -1): Promise<MyDat
   })
   // 默认得到是front格式数据，如MyData格式，如果不是则
   const { state, content, message } = formateReturnData(data.data)
-  console.log('formateReturnData(data.data)', formateReturnData(data.data))
   return {
     error: successCode.includes(state) ? '' : 'error',
     message,

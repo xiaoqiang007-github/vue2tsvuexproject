@@ -52,7 +52,6 @@ export default Vue.extend({
       }
     },
     handleEdit(index: number, row: any) {
-      console.log(index, row)
       this.$router.push({
         name: 'menuEdit',
         params: {
@@ -61,7 +60,6 @@ export default Vue.extend({
       })
     },
     handleDelete(index: number, row: any) {
-      console.log(index, row)
       this.$confirm('确定删除吗?', '删除提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

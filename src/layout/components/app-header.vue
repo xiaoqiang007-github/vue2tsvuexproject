@@ -38,9 +38,7 @@ export default Vue.extend({
 
   methods: {
     async loadUserInfo () {
-      console.log('loadUserInfo')
       const { content: data } = await getInfo()
-      console.log(data)
       this.user = data
     },
     async handleCommand (command: string) {

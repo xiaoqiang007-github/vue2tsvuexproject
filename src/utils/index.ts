@@ -29,7 +29,6 @@ function refreshToken () {
 
 request.interceptors.request.use(function (config) {
   const { user } = store.state
-  console.log('request.config', config)
   if (user && user.refresh_token) {
     config.headers =
     {
@@ -46,13 +45,11 @@ request.interceptors.request.use(function (config) {
 let isRreshShing = false // 控制刷新token状态
 let requests:any[] = [] // 存储刷新token 期间过来的401请求
 request.interceptors.response.use(function (config) {
-  console.log('response.request', config)
   return config
 }, async function (error) {
   if (error.response) { // 请求收到了响应，但是超出了2xx范围
     // 和后端协商的状态码
     const { status } = error.response
-    // console.log('status', status)
     if (status === 400) {
       Message.error('请求参数错误')
     } else if (status === 401) {
@@ -196,3 +193,24 @@ export const deleteRole = '/boss/role/'
 
 // 添加或更新角色
 export const saveOrUpdateRole = '/boss/role/saveOrUpdate'
+
+// 获取角色
+export const getRole = '/boss/role/'
+
+// 获取所有菜单并按层级展示
+export const getMenuNodeList = '/boss/menu/getMenuNodeList'
+
+// 获取角色拥有的菜单列表
+export const getRoleMenus = '/boss/menu/getRoleMenus'
+
+// 给用户分配角色
+export const setAllocateUserRoles = '/boss/role/allocateUserRoles'
+
+// 查询资源分类列表
+export const getAllResourceCategory = '/boss/resource/category/getAll'
+
+// 获取角色拥有的资源列表
+export const getRoleResources = '/boss/resource/getRoleResources'
+
+// 给角色分配资源
+export const setResource = '/boss/resource/allocateRoleResources'
