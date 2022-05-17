@@ -1,15 +1,17 @@
 <template>
   <div class="user">
-    user
+    <UserContent />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import UserContent from './components/UserContent.vue'
 
 export default Vue.extend({
   name: 'User',
   components: {
+    UserContent
   }
 })
 </script>

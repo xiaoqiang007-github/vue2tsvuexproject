@@ -214,3 +214,12 @@ export const getRoleResources = '/boss/resource/getRoleResources'
 
 // 给角色分配资源
 export const setResource = '/boss/resource/allocateRoleResources'
+
+// 分页查询用户信息
+export const getUserPages = '/boss/user/getUserPages'
+
+// 查询用户角色
+export const queryRoleUser = '/boss/role/user/'
+
+// 分页查询课程信息
+export const getQueryCourses = '/boss/course/getQueryCourses'

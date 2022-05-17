@@ -9,7 +9,8 @@ import {
   getRole,
   setAllocateUserRoles,
   getMenuNodeList,
-  getRoleMenus
+  getRoleMenus,
+  queryRoleUser
 } from './index'
 
 export const toGetRoleAll = async (): Promise<MyData> => {
@@ -137,6 +138,23 @@ export const toGetMenuNodeList = async (): Promise<MyData> => {
     method: 'get',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+export const toQueryRoleUser = async (id: string | number): Promise<MyData> => {
+  const data = await request({
+    url: queryRoleUser + id,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json'
     }
   })
   const { state, content, message } = formateReturnData(data.data)

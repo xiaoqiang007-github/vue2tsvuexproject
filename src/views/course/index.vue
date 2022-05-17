@@ -1,15 +1,17 @@
 <template>
   <div class="course-space">
-    course
+    <UserContent />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import UserContent from './components/courseContent.vue'
 
 export default Vue.extend({
   name: 'CourseIndex',
   components: {
+    UserContent
   }
 })
 </script>
