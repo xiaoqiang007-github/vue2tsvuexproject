@@ -223,3 +223,6 @@ export const queryRoleUser = '/boss/role/user/'
 
 // 分页查询课程信息
 export const getQueryCourses = '/boss/course/getQueryCourses'
+
+// 课程上下架
+export const changeState = '/boss/course/changeState'

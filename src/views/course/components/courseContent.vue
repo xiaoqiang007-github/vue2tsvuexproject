@@ -7,7 +7,7 @@
             <el-input v-model="form.courseName"></el-input>
           </el-form-item>
           <el-form-item label="状态" prop="status">
-            <el-select v-model="form.status" multiple placeholder="请选择">
+            <el-select v-model="form.status" placeholder="请选择">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -20,6 +20,7 @@
           <el-form-item>
             <el-button @click="reset('ruleForm')">重置</el-button>
             <el-button type="primary" @click="find('ruleForm')">查询</el-button>
+            <el-button type="success" @click="$router.push('/course-create')">添加课程</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -28,15 +29,21 @@
         <el-table-column prop="courseName" label="课程名称"> </el-table-column>
         <el-table-column prop="price" label="价格"> </el-table-column>
         <el-table-column prop="sortNum" label="排序"> </el-table-column>
-        <el-table-column prop="status" label="状态"> </el-table-column>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <el-switch
+              v-model="scope.row.status"
+              :active-value="1"
+              :inactive-value="0"
+              @change="changeStatus(scope.row, $event)"
+              :disabled="scope.row.isStatusLoadding"
+              active-color="#13ce66"
+              inactive-color="#ff4949">
+            </el-switch>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleDistribution(scope.row.id, scope.row)"
-              :type="scope.row.status === 0 ? 'danger' : 'primary'"
-              >下架</el-button
-            >
             <el-button
               size="mini"
               @click="handleDistribution(scope.row.id, scope.row)"
@@ -86,7 +93,7 @@ import {
   toSetAllocateUserRoles,
   toQueryRoleUser
 } from '@/utils/role'
-import { toGetQueryCourses } from '@/utils/course'
+import { toGetQueryCourses, toChangeState } from '@/utils/course'
 
 export default Vue.extend({
   name: 'UserContent',
@@ -102,15 +109,11 @@ export default Vue.extend({
       options: [
         {
           value: 0,
-          label: '全部'
+          label: '下架'
         },
         {
           value: 1,
           label: '上架'
-        },
-        {
-          value: 2,
-          label: '下架'
         }
       ],
       tableData: [],
@@ -125,6 +128,18 @@ export default Vue.extend({
     this.loadUser()
   },
   methods: {
+    async changeStatus (row: any, status: number) {
+      console.log(row.id, status)
+      row.isStatusLoadding = true
+      const { error, message } = await toChangeState({
+        courseId: row.id,
+        status
+      })
+      if (!error) {
+        this.$message.success(message)
+      }
+      row.isStatusLoadding = false
+    },
     async loadUser() {
       // 表单校验
       console.log(this.form)
@@ -137,7 +152,11 @@ export default Vue.extend({
       })
       console.log('content', content)
       if (!error) {
-        this.tableData = content.records
+        const tableData = content.records
+        tableData.forEach((item: any) => {
+          item.isStatusLoadding = false
+        })
+        this.tableData = tableData
         this.total = content.total
       }
     },
@@ -151,6 +170,7 @@ export default Vue.extend({
       (this.$refs.form as Form).resetFields()
     },
     find() {
+      console.log(this.form)
       this.loadUser()
     },
     async handleDistribution(id: number | string) {
