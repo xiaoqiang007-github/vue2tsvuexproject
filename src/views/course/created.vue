@@ -22,7 +22,7 @@
           </el-form-item>
           <el-form-item label="课程概述">
             <el-input type="textarea" v-model="form.previewFirstField" placeholder="概述1"></el-input>
-            <el-input type="textarea" v-model="form.previewSecondField" placeholder="概述1"></el-input>
+            <el-input type="textarea" v-model="form.previewSecondField" placeholder="概述2"></el-input>
           </el-form-item>
           <el-form-item label="讲师姓名">
             <el-input v-model="form.teacherDTO.teacherName"></el-input>
@@ -41,24 +41,13 @@
         </div>
         <div v-show="activeSetps === 1">
           <el-form-item label="课程封面">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-            >
-              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+            <!-- v-model 干了两件事 -->
+            <!-- prop：value -> modelValue；
+            事件：input -> update:modelValue； -->
+            <ImageUpload v-model="form.courseListImg" />
           </el-form-item>
-          <el-form-item label="解锁封面">
-            <el-upload
-              class="avatar-uploader"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :show-file-list="false"
-            >
-              <img v-if="imageUrl2" :src="imageUrl2" class="avatar" />
-              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            </el-upload>
+          <el-form-item label="介绍封面">
+            <ImageUpload v-model="form.courseImgUrl" />
           </el-form-item>
         </div>
         <div v-show="activeSetps === 2">
@@ -93,7 +82,7 @@
           <div v-show="isSwitch">
             <el-form-item label="开始时间">
               <el-time-select
-                v-model="value"
+                v-model="value1"
                 :picker-options="{
                   start: '08:30',
                   step: '00:15',
@@ -105,7 +94,7 @@
             </el-form-item>
             <el-form-item label="结束时间">
               <el-time-select
-                v-model="value"
+                v-model="value2"
                 :picker-options="{
                   start: '08:30',
                   step: '00:15',
@@ -146,6 +135,8 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import ImageUpload from './components/ImageUpload.vue'
+
 export default Vue.extend({
   name: 'CourseCreate',
   data() {
@@ -173,6 +164,8 @@ export default Vue.extend({
           icon: 'el-icon-edit'
         }
       ],
+      value1: '',
+      value2: '',
       form: {
         id: 0,
         courseName: '', // 1
@@ -186,7 +179,7 @@ export default Vue.extend({
         priceTag: '',
         discounts: 0,
         discountsTag: '',
-        courseImgUrl: '',
+        courseImgUrl: '', //
         shareTitle: '',
         shareDescription: '',
         shareImageTitle: '',
@@ -202,7 +195,7 @@ export default Vue.extend({
         seoKeywords: '',
         seoTitle: '',
         h5Url: '',
-        courseListImg: '',
+        courseListImg: '', //
         tag: '',
         status: 0,
         sortNum: 0,
@@ -361,33 +354,13 @@ export default Vue.extend({
       isSwitch: false
     }
   },
-  components: {},
-  methods: {}
+  components: {
+    ImageUpload
+  },
+  methods: {
+  }
 })
 </script>
 
 <style lang="scss" scoped>
-::v-deep .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-::v-deep .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-::v-deep .avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-::v-deep .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
 </style>

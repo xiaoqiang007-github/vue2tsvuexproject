@@ -226,3 +226,6 @@ export const getQueryCourses = '/boss/course/getQueryCourses'
 
 // 课程上下架
 export const changeState = '/boss/course/changeState'
+
+// 上传图片
+export const uploadCourse = '/boss/course/upload'
