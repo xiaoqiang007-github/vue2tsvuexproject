@@ -21,7 +21,7 @@
             <el-input v-model="form.courseDescription"></el-input>
           </el-form-item>
           <el-form-item label="课程概述">
-            <el-input type="textarea" v-model="form.previewFirstField" placeholder="概述1"></el-input>
+            <el-input type="textarea" class="summary" v-model="form.previewFirstField" placeholder="概述1"></el-input>
             <el-input type="textarea" v-model="form.previewSecondField" placeholder="概述2"></el-input>
           </el-form-item>
           <el-form-item label="讲师姓名">
@@ -52,65 +52,57 @@
         </div>
         <div v-show="activeSetps === 2">
           <el-form-item label="售卖价格">
-            <el-input placeholder="" v-model="form.input2">
+            <el-input placeholder="" v-model="form.discounts">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="商品原价">
-            <el-input placeholder="" v-model="form.input2">
+            <el-input placeholder="" v-model="form.price">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="销售">
-            <el-input placeholder="" v-model="form.input2">
+            <el-input placeholder="" v-model="form.sales">
               <template slot="append">单</template>
             </el-input>
           </el-form-item>
           <el-form-item label="活动标签">
-            <el-input placeholder="" v-model="form.input2"> </el-input>
+            <el-input placeholder="" v-model="form.discountsTag"> </el-input>
           </el-form-item>
         </div>
         <div v-show="activeSetps === 3">
           <el-form-item label="限时秒杀开关">
             <el-switch
-              v-model="isSwitch"
+              v-model="form.activityCourse"
               active-color="#13ce66"
               inactive-color="#ff4949"
             >
             </el-switch>
           </el-form-item>
-          <div v-show="isSwitch">
+          <div v-show="form.activityCourse">
             <el-form-item label="开始时间">
-              <el-time-select
-                v-model="value1"
-                :picker-options="{
-                  start: '08:30',
-                  step: '00:15',
-                  end: '18:30'
-                }"
-                placeholder="请选择日期时间"
-              >
-              </el-time-select>
+              <el-date-picker
+                v-model="form.activityCourseDTO.beginTime"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间">
-              <el-time-select
-                v-model="value2"
-                :picker-options="{
-                  start: '08:30',
-                  step: '00:15',
-                  end: '18:30'
-                }"
-                placeholder="请选择日期时间"
-              >
-              </el-time-select>
+              <el-date-picker
+                v-model="form.activityCourseDTO.endTime"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择日期">
+              </el-date-picker>
             </el-form-item>
             <el-form-item label="秒杀价">
-              <el-input placeholder="请输入内容" v-model="form.input2">
+              <el-input placeholder="请输入内容" v-model="form.activityCourseDTO.amount">
                 <template slot="append">元</template>
               </el-input>
             </el-form-item>
             <el-form-item label="秒杀库存">
-              <el-input placeholder="请输入内容" v-model="form.input2">
+              <el-input placeholder="请输入内容" v-model="form.activityCourseDTO.stock">
                 <template slot="append">个</template>
               </el-input>
             </el-form-item>
@@ -118,14 +110,24 @@
         </div>
         <div v-show="activeSetps === 4">
           <el-form-item label="课程详情">
-            <el-input v-model="form.name"></el-input>
+            <TextEdit v-model="form.courseDescriptionMarkDown" />
+          </el-form-item>
+          <el-form-item label="是否上下架">
+            <el-switch
+              v-model="form.status"
+              :active-value="1"
+              :inactive-value="0"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            >
+            </el-switch>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary">保存</el-button>
+            <el-button type="primary" @click="save">保存</el-button>
           </el-form-item>
         </div>
         <el-form-item v-if="activeSetps !== setpsList.length - 1">
-          <el-button @click="activeSetps++">下一步</el-button>
+          <el-button @click="next">下一步</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -136,6 +138,8 @@
 import Vue from 'vue'
 
 import ImageUpload from './components/ImageUpload.vue'
+import { toSaveOrUpdateCourse } from '@/utils/course'
+import TextEdit from './components/TextEdit.vue'
 
 export default Vue.extend({
   name: 'CourseCreate',
@@ -167,11 +171,11 @@ export default Vue.extend({
       value1: '',
       value2: '',
       form: {
-        id: 0,
+        // id: 0,
         courseName: '', // 1
         brief: '',
         courseDescription: '', // 1
-        teacherId: 0,
+        // teacherId: 0,
         totalCourseTime: 0,
         sales: 0,
         actualSales: 0,
@@ -209,8 +213,8 @@ export default Vue.extend({
         isGray: true,
         sectionDTOS: [
           {
-            id: 0,
-            courseId: 0,
+            // id: 0,
+            // courseId: 0,
             sectionName: '',
             description: '',
             createTime: '',
@@ -223,8 +227,8 @@ export default Vue.extend({
             lessonDTOS: [
               {
                 id: 0,
-                courseId: 0,
-                sectionId: 0,
+                // courseId: 0,
+                // sectionId: 0,
                 theme: '',
                 duration: '',
                 durationNum: 0,
@@ -248,10 +252,10 @@ export default Vue.extend({
                 isTimingPublish: true,
                 publishTime: '',
                 mediaDTO: {
-                  id: 0,
-                  courseId: 0,
-                  sectionId: 0,
-                  lessonId: 0,
+                  // id: 0,
+                  // courseId: 0,
+                  // sectionId: 0,
+                  // lessonId: 0,
                   channel: 0,
                   mediaType: 0,
                   coverImageUrl: '',
@@ -274,8 +278,8 @@ export default Vue.extend({
           }
         ],
         teacherDTO: {
-          id: 0,
-          courseId: 0,
+          // id: 0,
+          // courseId: 0,
           teacherName: '', // 1
           teacherHeadPicUrl: '',
           position: '',
@@ -284,9 +288,9 @@ export default Vue.extend({
         courseUrl: '',
         topNCourseLesson: [
           {
-            id: 0,
-            courseId: 0,
-            sectionId: 0,
+            // id: 0,
+            // courseId: 0,
+            // sectionId: 0,
             theme: '',
             duration: '',
             durationNum: 0,
@@ -310,7 +314,7 @@ export default Vue.extend({
             isTimingPublish: true,
             publishTime: '',
             mediaDTO: {
-              id: 0,
+              // id: 0,
               courseId: 0,
               sectionId: 0,
               lessonId: 0,
@@ -333,16 +337,16 @@ export default Vue.extend({
             }
           }
         ],
-        isBuy: true,
-        lessonUpdateCount: 0,
-        compareTime: '',
-        lastLearnLessonName: '',
+        // isBuy: true,
+        // lessonUpdateCount: 0,
+        // compareTime: '',
+        // lastLearnLessonName: '',
         courseDescriptionMarkDown: '',
-        activityCourse: true,
-        activityTime: 0,
+        activityCourse: false,
+        // activityTime: 0,
         activityCourseDTO: {
-          id: 0,
-          courseId: 0,
+          // id: 0,
+          // courseId: 0,
           beginTime: '',
           endTime: '',
           amount: 0,
@@ -355,12 +359,27 @@ export default Vue.extend({
     }
   },
   components: {
-    ImageUpload
+    ImageUpload,
+    TextEdit
   },
   methods: {
+    next () {
+      console.log(this.form)
+      this.activeSetps++
+    },
+    async save () {
+      const { error, message } = await toSaveOrUpdateCourse(this.form)
+      if (!error) {
+        this.$message.success(message)
+        this.$router.back()
+      }
+    }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+.summary {
+  margin-block: 10px;
+}
 </style>

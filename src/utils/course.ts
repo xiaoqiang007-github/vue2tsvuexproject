@@ -5,7 +5,8 @@ import {
   formateReturnData,
   getQueryCourses,
   changeState,
-  uploadCourse
+  uploadCourse,
+  saveOrUpdateCourse
 } from './index'
 
 interface CourseQuery {
@@ -56,7 +57,7 @@ export const toChangeState = async (params: CourseState): Promise<MyData> => {
   }
 }
 
-export const toUploadCourse = async (params: any): Promise<MyData> => {
+export const toUploadCourse = async (params: FormData, cb: (e: ProgressEvent)=>void): Promise<MyData> => {
   const data = await request({
     url: uploadCourse,
     method: 'post',
@@ -67,11 +68,26 @@ export const toUploadCourse = async (params: any): Promise<MyData> => {
     },
     data: params,
     onUploadProgress: (e: ProgressEvent) => {
-      // console.log(e)
-      // e.loaded // 已上传的数据
-      // e.total // 上传文件的总大小
-      console.log(Math.floor(e.loaded / e.total * 100))
+      cb(e)
     }
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+
+export const toSaveOrUpdateCourse = async (params: any): Promise<MyData> => {
+  const data = await request({
+    url: saveOrUpdateCourse,
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: params
   })
   const { state, content, message } = formateReturnData(data.data)
   return {

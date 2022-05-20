@@ -1,10 +1,18 @@
 <template>
   <div class="image-upload-space">
+    <el-progress
+      type="circle"
+      :status="status?status:null"
+      :percentage="percentage"
+      :width="178"
+      v-if="isLoading"
+    ></el-progress>
     <el-upload
       class="avatar-uploader"
       :http-request="upLoadRequest"
       action="https://jsonplaceholder.typicode.com/posts/"
       :show-file-list="false"
+      v-else
     >
       <img v-if="value" :src="value" class="avatar" />
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -25,15 +33,31 @@ export default Vue.extend({
     }
   },
   components: {},
+  data() {
+    return {
+      percentage: 0,
+      isLoading: false,
+      status: ''
+    }
+  },
   methods: {
     async upLoadRequest(file: any) {
       console.log('upLoadRequest', file.file)
       var formData = new FormData()
       formData.append('file', file.file)
-      const { error, content } = await toUploadCourse(formData)
+      this.isLoading = true
+      const { error, content } = await toUploadCourse(formData, (e: ProgressEvent) => {
+        console.log(e)
+        console.log(Math.floor(e.loaded / e.total * 100))
+        this.percentage = Math.floor(e.loaded / e.total * 100)
+      })
+      this.isLoading = false
       if (!error) {
         console.log(content)
+        this.status = 'success'
         this.$emit('input', content.name)
+      } else {
+        this.status = 'exception'
       }
     }
   }

@@ -229,3 +229,6 @@ export const changeState = '/boss/course/changeState'
 
 // 上传图片
 export const uploadCourse = '/boss/course/upload'
+
+// 保存或者更新课程信息
+export const saveOrUpdateCourse = '/boss/course/saveOrUpdateCourse'
