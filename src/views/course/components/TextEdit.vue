@@ -20,8 +20,19 @@
 <script lang="ts">
 // vue中使用教程 https://www.wangeditor.com/v5/for-frame.html#%E4%BD%BF%E7%94%A8
 import Vue from 'vue'
-import '@wangeditor/editor/dist/css/style.css'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { toUploadCourse } from '@/utils/course'
+const customUpload = async (file: any, insertFn: any) => {
+  // 自定义选择图片
+  console.log(file, insertFn)
+  // toUploadCourse
+  var formData = new FormData()
+  formData.append('file', file)
+  const { error, content } = await toUploadCourse(formData)
+  if (!error) {
+    insertFn(content.name)
+  }
+}
 
 export default Vue.extend({
   name: 'TextEdit',
@@ -40,13 +51,31 @@ export default Vue.extend({
       editor: null,
       html: '<p>hello</p>',
       toolbarConfig: {},
-      editorConfig: { placeholder: '请输入内容...' },
+      editorConfig: {
+        placeholder: '请输入内容...',
+        MENU_CONF: {
+          uploadImage: {
+            customUpload
+          }
+        }
+      },
       mode: 'default' // or 'simple'
     }
   },
   methods: {
     onCreated(editor: any) {
+      // editor.MENU_CONF.uploadImage = {
+      //   // 自定义上传
+      //   async customUpload(file: File, insertFn: any) {
+      //     // file 即选中的文件
+      //     // 自己实现上传，并得到图片 url alt href
+      //     // 最后插入图片
+      //     // insertFn(url, alt, href)
+      //     console.log('上传图片')
+      //   }
+      // }
       this.editor = Object.seal(editor) // 一定要用 Object.seal() ，否则会报错
+      console.log('onCreated', editor)
     },
     onChange(editor: any) {
       console.log('onChange', editor.getHtml())

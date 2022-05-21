@@ -2,7 +2,7 @@ import axios from 'axios'
 import store from '@/store'
 import { Message } from 'element-ui'
 import router from '@/router'
-import qs from 'qs'
+import qs from 'qs'// CourseCreateOrEdit
 
 export const request = axios.create({
   baseURL: 'http://edufront.lagounews.com'
@@ -232,3 +232,12 @@ export const uploadCourse = '/boss/course/upload'
 
 // 保存或者更新课程信息
 export const saveOrUpdateCourse = '/boss/course/saveOrUpdateCourse'
+
+// 通过课程Id获取课程信息
+export const getCourseById = '/boss/course/getCourseById'
+
+// getBySectionId
+export const getBySectionId = '/boss/course/section/getBySectionId'
+
+// getSectionAndLesson
+export const getSectionAndLesson = '/boss/course/section/getSectionAndLesson'

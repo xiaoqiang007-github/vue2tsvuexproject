@@ -6,7 +6,8 @@ import {
   getQueryCourses,
   changeState,
   uploadCourse,
-  saveOrUpdateCourse
+  saveOrUpdateCourse,
+  getCourseById
 } from './index'
 
 interface CourseQuery {
@@ -57,7 +58,7 @@ export const toChangeState = async (params: CourseState): Promise<MyData> => {
   }
 }
 
-export const toUploadCourse = async (params: FormData, cb: (e: ProgressEvent)=>void): Promise<MyData> => {
+export const toUploadCourse = async (params: FormData, cb?: (e: ProgressEvent)=>void): Promise<MyData> => {
   const data = await request({
     url: uploadCourse,
     method: 'post',
@@ -68,7 +69,7 @@ export const toUploadCourse = async (params: FormData, cb: (e: ProgressEvent)=>v
     },
     data: params,
     onUploadProgress: (e: ProgressEvent) => {
-      cb(e)
+      cb && cb(e)
     }
   })
   const { state, content, message } = formateReturnData(data.data)
@@ -88,6 +89,25 @@ export const toSaveOrUpdateCourse = async (params: any): Promise<MyData> => {
       'Content-Type': 'application/json'
     },
     data: params
+  })
+  const { state, content, message } = formateReturnData(data.data)
+  return {
+    error: successCode.includes(state) ? '' : 'error',
+    message,
+    content,
+    state
+  }
+}
+export const toGetCourseById = async (courseId: number | string): Promise<MyData> => {
+  const data = await request({
+    url: getCourseById,
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: {
+      courseId
+    }
   })
   const { state, content, message } = formateReturnData(data.data)
   return {

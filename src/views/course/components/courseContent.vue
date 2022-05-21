@@ -46,12 +46,12 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleDistribution(scope.row.id, scope.row)"
+              @click="$router.push(('/course/'+scope.row.id+'/course-edit'))"
               >编辑</el-button
             >
             <el-button
               size="mini"
-              @click="handleDistribution(scope.row.id, scope.row)"
+              @click="$router.push(('/course/'+scope.row.id+'/section'))"
               >内容管理</el-button
             >
           </template>
@@ -66,33 +66,12 @@
       >
       </el-pagination>
     </el-card>
-
-    <el-dialog title="分配角色" :visible.sync="roleDialogVisible">
-      <el-select v-model="value1" multiple placeholder="请选择">
-        <el-option
-          v-for="item in roles"
-          :key="item.id"
-          :label="item.name"
-          :value="item.id"
-        >
-        </el-option>
-      </el-select>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="roleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmDialog">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import { Form } from 'element-ui'
-import {
-  toGetRoleAll,
-  toSetAllocateUserRoles,
-  toQueryRoleUser
-} from '@/utils/role'
 import { toGetQueryCourses, toChangeState } from '@/utils/course'
 
 export default Vue.extend({
@@ -119,7 +98,6 @@ export default Vue.extend({
       tableData: [],
       total: 0,
       roles: [],
-      roleDialogVisible: false,
       selectedUser: -1,
       value1: []
     }
@@ -128,6 +106,9 @@ export default Vue.extend({
     this.loadUser()
   },
   methods: {
+    edit () {
+      // this.$router.push({name: 'course-edit', query: {CourseId: scope.row.id}})
+    },
     async changeStatus (row: any, status: number) {
       console.log(row.id, status)
       row.isStatusLoadding = true
@@ -160,12 +141,6 @@ export default Vue.extend({
         this.total = content.total
       }
     },
-    async loadRole() {
-      const { error, content } = await toGetRoleAll()
-      if (!error) {
-        this.roles = content
-      }
-    },
     reset() {
       (this.$refs.form as Form).resetFields()
     },
@@ -173,28 +148,9 @@ export default Vue.extend({
       console.log(this.form)
       this.loadUser()
     },
-    async handleDistribution(id: number | string) {
-      const { error, content } = await toQueryRoleUser(this.selectedUser)
-      if (!error) {
-        this.value1 = content.map((item: any) => item.id)
-      }
-      this.loadRole()
-      this.selectedUser = id as any
-      this.roleDialogVisible = true
-    },
     handleCurrentChange(val: number) {
       console.log(`当前页: ${val}`)
       this.loadUser()
-    },
-    async confirmDialog() {
-      const { error, message } = await toSetAllocateUserRoles({
-        userId: this.selectedUser,
-        roleIdList: this.value1
-      })
-      if (!error) {
-        this.$message.success(message)
-        this.roleDialogVisible = false
-      }
     }
   }
 })

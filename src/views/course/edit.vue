@@ -1,6 +1,6 @@
 <template>
-  <div class="course-create-space">
-    <createOrEdit />
+  <div class="edit-course">
+    <createOrEdit :is-edit="true" />
   </div>
 </template>
 
@@ -9,7 +9,9 @@ import Vue from 'vue'
 import createOrEdit from './components/createOrEdit.vue'
 
 export default Vue.extend({
-  name: 'CourseCreate',
+  name: 'CourseEdit',
+  props: {
+  },
   components: {
     createOrEdit
   }
