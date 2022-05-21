@@ -241,3 +241,9 @@ export const getBySectionId = '/boss/course/section/getBySectionId'
 
 // getSectionAndLesson
 export const getSectionAndLesson = '/boss/course/section/getSectionAndLesson'
+
+// 保存或更新章节
+export const saveOrUpdateSectionChapter = '/boss/course/section/saveOrUpdateSection'
+
+// 保存或更新课时
+export const saveOrUpdateClassHour = '/boss/course/lesson/saveOrUpdate'
